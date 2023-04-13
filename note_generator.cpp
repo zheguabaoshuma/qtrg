@@ -61,11 +61,17 @@ void note::setAnim() {
 }
 
 void note::start_anim() {
-    setAnim();
-    qDebug()<<anim.state();
-    QTimer::singleShot(1450,[=](){emit me(rail);});
-    QTimer::singleShot(1300,[=](){ready_to_be_hit=!ready_to_be_hit;});
-
+    if(!recycled){
+        setAnim();
+        //qDebug()<<anim.state();
+        QTimer::singleShot(1450,[=](){emit me(rail);});
+        QTimer::singleShot(1300,[=](){ready_to_be_hit=!ready_to_be_hit;});
+        recycled=true;
+    }
+    else{
+        QTimer::singleShot(1450,[=](){emit me(rail);});
+        QTimer::singleShot(1300,[=](){ready_to_be_hit=!ready_to_be_hit;});
+    }
     if(timer.isValid())
         timer.start();
     else timer.restart();
@@ -86,7 +92,7 @@ void note_generator::generate_note(int railSeq) {
     note* n=nullptr;
     QMutexLocker lock(&_list::lock);
     QMutexLocker Lock(&_stack::lock);
-    qDebug()<<"lock";
+    //qDebug()<<"lock";
 
     if(note_stack.isEmpty())
         n=new note(this,parent);
@@ -97,7 +103,7 @@ void note_generator::generate_note(int railSeq) {
     n->setpos(63*(railSeq-1),0);
     n->show();
     n->start_anim();
-    qDebug()<<"unlock";
+    //qDebug()<<"unlock";
 
     //note* current_note=note_pool.pop();
 }
@@ -109,7 +115,7 @@ void note_generator::expire_out_list(int r) {
 
 void note_generator::generate_by_music(int r) {
     generate_note(r);
-    qDebug()<<"copy!";
+    //qDebug()<<"copy!";
 }
 
 void move_thread::hit(move_thread *who) {

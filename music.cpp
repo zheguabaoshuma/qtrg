@@ -11,8 +11,10 @@ music_player::music_player() {
 void music_player::read(QString s) {
     for(int k=0;k<150;k++)
     {
-        note_rail_info->append(1);
-        time_info->append(500*(k+1));
+        for(int r=1;r<4;r++){
+            note_rail_info->append(r);
+            time_info->append(500*(k+5));
+        }
     }
 }
 

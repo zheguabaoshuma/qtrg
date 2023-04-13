@@ -76,7 +76,7 @@ void rg::kill(int r) {
     if(n!=nullptr&&n->ready_to_be_hit)
     {
         //g->note_pool[r].out_list();
-        qDebug()<<"hit";
+        //qDebug()<<"hit";
         n->stop();
         //n->recycle();
     }

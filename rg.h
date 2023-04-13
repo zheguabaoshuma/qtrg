@@ -43,11 +43,11 @@ private:
     void keyPressEvent(QKeyEvent *event) override{
         if(event->key()==Qt::Key_R)
             kill(1);
-        if(event->key()==Qt::Key_T)
+        else if(event->key()==Qt::Key_T)
             kill(2);
-        if(event->key()==Qt::Key_Y)
+        else if(event->key()==Qt::Key_Y)
             kill(3);
-        if(event->key()==Qt::Key_U)
+        else if(event->key()==Qt::Key_U)
             kill(4);
     }
     void showEvent(QShowEvent *event) override{

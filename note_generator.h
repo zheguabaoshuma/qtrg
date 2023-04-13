@@ -33,6 +33,7 @@ public:
     QLabel *entity;
     bool ready_to_be_hit=false;
     double posx=0,posy=0,velocity=5;
+    bool recycled=false;
     void setSkin();
     void setAnim();
     void start_anim();
