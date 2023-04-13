@@ -4,6 +4,7 @@
 
 // You may need to build the project (run Qt uic code generator) to get "ui_rg.h" resolved
 #include<QThread>
+#include<QDebug>
 #include "rg.h"
 #include "ui_rg.h"
 #include"note_generator.h"
@@ -39,13 +40,15 @@ rg::rg(QWidget *parent) :
     line.move(0,550);
     line.show();
 
-    //music=new music_player;
+    p=new music_player;
+    mt=new music_thread(gen,this,&out);
+
 }
 
 
 void rg::begin() {
 
-    //QThread::msleep(100000);
+
 }
 
 rg::~rg() {
@@ -54,11 +57,14 @@ rg::~rg() {
 
 void rg::pushbtn_slot() {
     v_note->setSkin();
-    //music->loadsrc("../Cyaegha.mp3");
-    //music->play();
-    gen->generate_note(1);
-    gen->generate_note(2);
-    gen->generate_note(3);
+
+
+    //gen->generate_note(1);
+    mt->start();
+
+//    gen->generate_note(2);
+//    gen->generate_note(3);
+
 }
 
 void rg::kill(int r) {

@@ -14,6 +14,8 @@
 #include<QImage>
 #include<QThread>
 #include<QtMultimedia/QMediaPlayer>
+#include <QAudioOutput>
+#include "music.h"
 #include"note_generator.h"
 
 
@@ -33,7 +35,9 @@ public:
     ~rg() override;
     QLabel line;
     void kill(int);
-
+    music_player *p;
+    music_thread *mt;
+    QAudioOutput out;
 private:
     Ui::rg *ui;
     void keyPressEvent(QKeyEvent *event) override{

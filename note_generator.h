@@ -161,24 +161,7 @@ public:
                     anim.setEndValue(QPoint(bind_list[i]->getFirst()->posx, bind_list[i]->getFirst()->posy+600));
                     anim.start();
                 }
-                /*for(int k=0;k<n;k++)
-                {
-                    QMutexLocker lock(&_list::lock);
-                    note* p=bind_list[i]->at(k);
-                    if(p!= nullptr) {
-                        p->setpos(p->posx,p->posy + p->velocity);
-                        qDebug()<<"run move"<<p;
-                        if (!(p->ready_to_be_hit) &&
-                            p->posy > line_pospx - halfwinpx &&
-                            p->posy < line_pospx + halfwinpx)
-                            p->ready_to_be_hit = true;
-                        else if (p->posy > line_pospx + halfwinpx) {
-                            bind_list[i]->out_list();
-                            p->recycle();
-                        }
-                    }
 
-                }*/
             }
             QThread::msleep(1000);
         }
@@ -203,11 +186,9 @@ private:
     note_hitter* h=nullptr;
     move_thread *m=nullptr;
 public:
-//    note_generator(){
-//        m=new move_thread(h);
-//        m->bind(note_pool,note_pool_copy);
-//        m->start();
-//    };
+    note_generator(){
+
+    };
     void generate_note(int railSeq);
     void read();
     void setHitter(note_hitter* h){this->h=h;}
@@ -218,6 +199,7 @@ public:
     friend note_hitter;
 public slots:
     void expire_out_list(int r);
+    void generate_by_music(int r);
 };
 
 class move_thread;
@@ -236,24 +218,5 @@ signals:
 };
 
 
-//class note_animation:QObject{
-//Q_OBJECT
-//private:
-//    note* bind_note;
-//    QPropertyAnimation anim;
-//public:
-//    note_animation(){
-//        anim.setPropertyName("pos");
-//        anim.setStartValue(bind_note->entity->pos());
-//        anim.setEndValue(QPoint(bind_note->posx,bind_note->posy+500));
-//    }
-//    void bind(note* n){
-//        bind_note=n;
-//        anim.setTargetObject(n->entity);
-//    }
-//    void start(){
-//        anim.start();
-//    }
-//};
 
 #endif //UNTITLED_NOTE_GENERATOR_H

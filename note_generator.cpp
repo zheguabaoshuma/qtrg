@@ -56,8 +56,8 @@ void note::setAnim() {
     anim.setPropertyName("pos");
     anim.setTargetObject(entity);
     anim.setStartValue(entity->pos());
-    anim.setEndValue(QPoint(posx,posy+800));
-    anim.setDuration(2000);
+    anim.setEndValue(QPoint(posx,posy+600));
+    anim.setDuration(1500);
 }
 
 void note::start_anim() {
@@ -87,6 +87,7 @@ void note_generator::generate_note(int railSeq) {
     QMutexLocker lock(&_list::lock);
     QMutexLocker Lock(&_stack::lock);
     qDebug()<<"lock";
+
     if(note_stack.isEmpty())
         n=new note(this,parent);
     else
@@ -104,6 +105,11 @@ void note_generator::generate_note(int railSeq) {
 void note_generator::expire_out_list(int r) {
     note* n=note_pool[r].out_list();
     n->recycle();
+}
+
+void note_generator::generate_by_music(int r) {
+    generate_note(r);
+    qDebug()<<"copy!";
 }
 
 void move_thread::hit(move_thread *who) {
