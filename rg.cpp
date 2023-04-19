@@ -37,7 +37,7 @@ rg::rg(QWidget *parent) :
     line_skin=line_skin.scaled(QSize(line_skin.width()/3,line_skin.height()/3));
     line.setParent(this);
     line.setPixmap(line_skin);
-    line.move(0,550);
+    line.move(0,540);
     line.show();
 
     p=new music_player;

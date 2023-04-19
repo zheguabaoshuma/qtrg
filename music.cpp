@@ -2,20 +2,32 @@
 // Created by Tuuuu on 2023/4/13.
 //
 #include "music.h"
-
+#include<fstream>
 music_player::music_player() {
     note_rail_info=new QList<int>;
     time_info=new QList<int>;
 }
 
 void music_player::read(QString s) {
-    for(int k=0;k<150;k++)
+    std::fstream read_stream;
+    read_stream.open("../data.txt",std::ios_base::in);
+    int line_buf;
+    while(true)
     {
-        for(int r=1;r<4;r++){
-            note_rail_info->append(r);
-            time_info->append(500*(k+5));
-        }
+        read_stream>>line_buf;
+        if(line_buf==-1)break;
+        note_rail_info->append(line_buf);
+        read_stream>>line_buf;
+        time_info->append(line_buf);
     }
+    read_stream.close();
+//    for(int k=0;k<150;k++)
+//    {
+//        for(int r=1;r<4;r++){
+//            note_rail_info->append(r);
+//            time_info->append(500*(k+5));
+//        }
+//    }
 }
 
 void music_player::set_current(QString s) {

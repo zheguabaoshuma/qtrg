@@ -9,8 +9,6 @@ QMutex _list::lock;
 QMutex _stack::lock;
 note::note(note_generator* g,QWidget* fa_pt,QObject* parent):QObject(parent)
 {
-    //src_skin.load("C:/Users/Tuuuu/CLionProjects/untitled/note.png");
-    //src_skin=src_skin.scaled(QSize(src_skin.width()/4,src_skin.height()/4));
     connect(this, &note::me,g, &note_generator::expire_out_list);
     entity=new QLabel(fa_pt);
     setAnim();
@@ -37,8 +35,9 @@ void note::recycle() {
     timer.invalidate();
     gen->note_pool->out_list();
     ready_to_be_hit=false;
-    entity->move(0,-20);
-    QMutexLocker lock(&_stack::lock);
+    //entity->move(0,-20);
+    entity->hide();
+    //QMutexLocker lock(&_stack::lock);
     gen->note_stack.push(this);
 }
 
@@ -64,13 +63,15 @@ void note::start_anim() {
     if(!recycled){
         setAnim();
         //qDebug()<<anim.state();
-        QTimer::singleShot(1450,[=](){emit me(rail);});
-        QTimer::singleShot(1300,[=](){ready_to_be_hit=!ready_to_be_hit;});
+        QTimer::singleShot(1250,[=](){ready_to_be_hit=!ready_to_be_hit;});
+        QTimer::singleShot(1500,[=](){emit me(rail);});
         recycled=true;
     }
     else{
-        QTimer::singleShot(1450,[=](){emit me(rail);});
-        QTimer::singleShot(1300,[=](){ready_to_be_hit=!ready_to_be_hit;});
+        anim.setStartValue(entity->pos());
+        anim.setEndValue(QPoint(posx,posy+600));
+        QTimer::singleShot(1250,[=](){ready_to_be_hit=!ready_to_be_hit;});
+        QTimer::singleShot(1500,[=](){emit me(rail);});
     }
     if(timer.isValid())
         timer.start();
@@ -84,7 +85,6 @@ void note::setRail(int r) {
 
 void note::stop() {
     anim.stop();
-    //setpos(posx,posy-10000);
 }
 
 
@@ -92,7 +92,7 @@ void note_generator::generate_note(int railSeq) {
     note* n=nullptr;
     QMutexLocker lock(&_list::lock);
     QMutexLocker Lock(&_stack::lock);
-    //qDebug()<<"lock";
+    //qDebug()<<railSeq;
 
     if(note_stack.isEmpty())
         n=new note(this,parent);
