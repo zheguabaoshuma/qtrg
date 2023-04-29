@@ -63,14 +63,14 @@ void note::start_anim() {
     if(!recycled){
         setAnim();
         //qDebug()<<anim.state();
-        QTimer::singleShot(1250,[=](){ready_to_be_hit=!ready_to_be_hit;});
+        QTimer::singleShot(1250,[=](){ready_to_be_hit=true;});
         QTimer::singleShot(1500,[=](){emit me(rail);});
         recycled=true;
     }
     else{
         anim.setStartValue(entity->pos());
         anim.setEndValue(QPoint(posx,posy+600));
-        QTimer::singleShot(1250,[=](){ready_to_be_hit=!ready_to_be_hit;});
+        QTimer::singleShot(1250,[=](){ready_to_be_hit=true;});
         QTimer::singleShot(1500,[=](){emit me(rail);});
     }
     if(timer.isValid())

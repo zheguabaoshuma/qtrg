@@ -35,9 +35,10 @@ public:
     ~rg() override;
     QLabel line;
     void kill(int);
-    music_player *p;
     music_thread *mt;
     QAudioOutput out;
+    void set_song(QString);
+
 private:
     Ui::rg *ui;
     void keyPressEvent(QKeyEvent *event) override{
@@ -50,11 +51,11 @@ private:
         else if(event->key()==Qt::Key_U)
             kill(4);
     }
-    void showEvent(QShowEvent *event) override{
 
-    }
 
 private slots:
+    void set_volume(float);
+
 void pushbtn_slot();
 };
 

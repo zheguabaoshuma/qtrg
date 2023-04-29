@@ -23,14 +23,9 @@ rg::rg(QWidget *parent) :
     ui->setupUi(this);
     setFixedSize(1359,640);
 
-
-    QPalette palette;
-    QPixmap Bg_img;
-    Bg_img.load("C:/Users/Tuuuu/CLionProjects/untitled/blur.jpg");
-    palette.setBrush(QPalette::Window,Bg_img);
     v_note=new note(gen,this);
-    this->setPalette(palette);
     connect(ui->pushButton,SIGNAL(clicked()),this,SLOT(pushbtn_slot()));
+    ui->pushButton->setStyleSheet("QPushButton {""border: none;""padding: 0;""}");
 
     QPixmap line_skin;
     line_skin.load("C:/Users/Tuuuu/CLionProjects/untitled/wip.png");
@@ -40,7 +35,6 @@ rg::rg(QWidget *parent) :
     line.move(0,540);
     line.show();
 
-    p=new music_player;
     mt=new music_thread(gen,this,&out);
 
 }
@@ -57,14 +51,7 @@ rg::~rg() {
 
 void rg::pushbtn_slot() {
     v_note->setSkin();
-
-
-    //gen->generate_note(1);
     mt->start();
-
-//    gen->generate_note(2);
-//    gen->generate_note(3);
-
 }
 
 void rg::kill(int r) {
@@ -75,10 +62,17 @@ void rg::kill(int r) {
         n=gen->get_first(r);
     if(n!=nullptr&&n->ready_to_be_hit)
     {
-        //g->note_pool[r].out_list();
-        //qDebug()<<"hit";
         n->stop();
-        //n->recycle();
     }
 
+}
+
+void rg::set_volume(float h) {
+    out.setVolume(h);
+    qDebug()<<out.volume();
+}
+
+void rg::set_song(QString s) {
+    mt->music->set_current(s);
+    mt->music->read(s);
 }
