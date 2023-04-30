@@ -24,6 +24,8 @@ public:
     void hide_everything();
     void show_everything();
     void setup_myui();
+    void anim_fadein();
+    void anim_fadeout();
     ~rg_mainmenu() override;
 
 private:
@@ -32,6 +34,10 @@ private:
     options *core_opt;
     class select *select_menu;
     QPalette palette;
+    QLabel *trans_anim;
+    QPropertyAnimation *fadein;
+    QPropertyAnimation *fadeout;
+    QSequentialAnimationGroup *anim_group;
 private slots:
     void pushbtn_slot();
     void pushbtn_slot2();

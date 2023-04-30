@@ -28,22 +28,32 @@ rg::rg(QWidget *parent) :
     ui->pushButton->setStyleSheet("QPushButton {""border: none;""padding: 0;""}");
 
     QPixmap line_skin;
-    line_skin.load("C:/Users/Tuuuu/CLionProjects/untitled/wip.png");
-    line_skin=line_skin.scaled(QSize(line_skin.width()/3,line_skin.height()/3));
-    line.setParent(this);
-    line.setPixmap(line_skin);
-    line.move(0,540);
-    line.show();
 
     mt=new music_thread(gen,this,&out);
 
+    line_skin.load("../line.png");
+    line_skin=line_skin.scaled(500,8);
+    ui->line->setPixmap(line_skin);
+
+    sprite1=new QMovie("../sprite.gif");
+    sprite2=new QMovie("../sprite.gif");
+    sprite3=new QMovie("../sprite.gif");
+    sprite4=new QMovie("../sprite.gif");
+    sprite1->setScaledSize(QSize(128,128));
+    sprite2->setScaledSize(QSize(128,128));
+    sprite3->setScaledSize(QSize(128,128));
+    sprite4->setScaledSize(QSize(128,128));
+
+    ui->sprite1->setMovie(sprite1);
+    ui->sprite2->setMovie(sprite2);
+    ui->sprite3->setMovie(sprite3);
+    ui->sprite4->setMovie(sprite4);
+    ui->sprite1->raise();
+    ui->sprite2->raise();
+    ui->sprite3->raise();
+    ui->sprite4->raise();
 }
 
-
-void rg::begin() {
-
-
-}
 
 rg::~rg() {
     delete ui;
@@ -56,13 +66,18 @@ void rg::pushbtn_slot() {
 
 void rg::kill(int r) {
     note* n=nullptr;
-    //QMutexLocker lock(&_list::lock);
-
     if(!gen->is_empty(r))
         n=gen->get_first(r);
     if(n!=nullptr&&n->ready_to_be_hit)
     {
         n->stop();
+        switch (r) {
+            case 1: sprite1->start();break;
+            case 2: sprite2->start();break;
+            case 3: sprite3->start();break;
+            case 4: sprite4->start();break;
+            default:break;
+        }
     }
 
 }
@@ -76,3 +91,4 @@ void rg::set_song(QString s) {
     mt->music->set_current(s);
     mt->music->read(s);
 }
+

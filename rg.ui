@@ -16,8 +16,8 @@
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
     <rect>
-     <x>642</x>
-     <y>240</y>
+     <x>1070</x>
+     <y>20</y>
      <width>75</width>
      <height>24</height>
     </rect>
@@ -25,6 +25,133 @@
    <property name="text">
     <string>start</string>
    </property>
+  </widget>
+  <widget class="QWidget" name="widget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>430</x>
+     <y>0</y>
+     <width>500</width>
+     <height>641</height>
+    </rect>
+   </property>
+   <widget class="QLabel" name="line">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>525</y>
+      <width>500</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="rail1">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>0</y>
+      <width>100</width>
+      <height>641</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="rail2">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>0</y>
+      <width>100</width>
+      <height>641</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="rail3">
+    <property name="geometry">
+     <rect>
+      <x>250</x>
+      <y>0</y>
+      <width>100</width>
+      <height>641</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="rail4">
+    <property name="geometry">
+     <rect>
+      <x>350</x>
+      <y>0</y>
+      <width>100</width>
+      <height>641</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="sprite1">
+    <property name="geometry">
+     <rect>
+      <x>35</x>
+      <y>468</y>
+      <width>128</width>
+      <height>128</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="sprite2">
+    <property name="geometry">
+     <rect>
+      <x>135</x>
+      <y>468</y>
+      <width>128</width>
+      <height>128</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="sprite3">
+    <property name="geometry">
+     <rect>
+      <x>235</x>
+      <y>468</y>
+      <width>128</width>
+      <height>128</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="sprite4">
+    <property name="geometry">
+     <rect>
+      <x>332</x>
+      <y>468</y>
+      <width>128</width>
+      <height>128</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
   </widget>
  </widget>
  <resources/>

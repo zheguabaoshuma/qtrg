@@ -34,6 +34,28 @@ rg_mainmenu::rg_mainmenu(QWidget *parent) :
     pixmap.load("../blur.jpg");
     palette.setBrush(QPalette::Window,pixmap);
     this->setPalette(palette);
+    QPixmap apophenia;
+    apophenia.load("../blur.jpg");
+
+    trans_anim=new QLabel(this);
+    trans_anim->setPixmap(apophenia);
+    trans_anim->move(QPoint(-1000,-1000));
+    //trans_anim->hide();
+
+    fadein=new QPropertyAnimation(trans_anim,"size");
+    fadein->setStartValue(QSize(1,640));
+    //fadein->setKeyValueAt(0.5,QSize(780,640));
+    fadein->setEndValue(QSize(1360,640));
+    fadein->setDuration(300);
+
+    fadeout=new QPropertyAnimation(trans_anim,"size");
+    fadeout->setStartValue(QSize(1360,640));
+    fadeout->setEndValue(QSize(1,640));
+    fadeout->setDuration(300);
+
+    anim_group=new QSequentialAnimationGroup(this);
+    anim_group->addAnimation(fadein);
+    anim_group->addAnimation(fadeout);
 }
 
 rg_mainmenu::~rg_mainmenu() {
@@ -41,26 +63,40 @@ rg_mainmenu::~rg_mainmenu() {
 }
 
 void rg_mainmenu::pushbtn_slot() {
-    ui->stackedWidget->setCurrentIndex(0);
-    ui->stackedWidget->show();
-    ui->pushButton_3->show();
-    hide_everything();
+    anim_fadein();
+    connect(anim_group,&QSequentialAnimationGroup::currentAnimationChanged,[=]{
+        ui->stackedWidget->setCurrentIndex(0);
+        ui->stackedWidget->show();
+        ui->pushButton_3->show();
+        hide_everything();});
+
+
 }
 
 void rg_mainmenu::pushbtn_slot2() {
-    ui->stackedWidget->setCurrentIndex(1);
-    ui->stackedWidget->show();
-    ui->pushButton_3->show();
-    hide_everything();
+    anim_fadein();
+    connect(anim_group,&QSequentialAnimationGroup::currentAnimationChanged,[=]{
+        ui->stackedWidget->setCurrentIndex(1);
+        ui->stackedWidget->show();
+        ui->pushButton_3->show();
+        hide_everything();});
+
 }
 
 void rg_mainmenu::pushbtn_slot3() {
-    core_rg->mt->stop();
-    core_rg->mt->music->stop();
-    ui->stackedWidget->setCurrentIndex(-1);
-    ui->stackedWidget->hide();
-    ui->pushButton_3->hide();
-    show_everything();
+    if(core_rg->mt->isRunning()){
+        core_rg->mt->stop();
+        core_rg->mt->music->stop();
+        QThread::msleep(500);
+    }
+
+    anim_fadein();
+    connect(anim_group,&QSequentialAnimationGroup::currentAnimationChanged,[=]{
+        ui->stackedWidget->setCurrentIndex(-1);
+        ui->stackedWidget->hide();
+        ui->pushButton_3->hide();
+        show_everything();});
+
 }
 
 void rg_mainmenu::hide_everything() {
@@ -74,8 +110,8 @@ void rg_mainmenu::show_everything() {
 }
 
 void rg_mainmenu::setup_myui() {
-    ui->pushButton->setStyleSheet("QPushButton {""border: none;""padding: 0;""}");
-    ui->pushButton_2->setStyleSheet("QPushButton {""border: none;""padding: 0;""}");
+    ui->pushButton->setStyleSheet("QPushButton {""border: none;""padding: 0;""border-radius: 5px""}");
+    ui->pushButton_2->setStyleSheet("QPushButton {""border: none;""padding: 0;""border-radius: 5px""}");
     ui->pushButton_3->setStyleSheet("QPushButton {""border: none;""padding: 0;""}");
 
 }
@@ -85,6 +121,12 @@ void rg_mainmenu::play_songs(QString s) {
     qDebug()<<s;
     ui->stackedWidget->setCurrentIndex(2);
 }
+
+void rg_mainmenu::anim_fadein() {
+    anim_group->start();
+    trans_anim->move(0,0);
+}
+
 
 
 

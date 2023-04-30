@@ -45,7 +45,7 @@ void note::setSkin() {
     QPixmap *p=new QPixmap;
     p->load("C:/Users/Tuuuu/CLionProjects/untitled/note.png");
     src_skin=p;
-    *src_skin=src_skin->scaled(QSize(src_skin->width()/4,src_skin->height()/4));
+    *src_skin=src_skin->scaled(62,16);
 
 }
 
@@ -100,7 +100,7 @@ void note_generator::generate_note(int railSeq) {
         n=note_stack.pop();
     note_pool[railSeq].push_back(n);
     n->setRail(railSeq);
-    n->setpos(63*(railSeq-1),0);
+    n->setpos(480+19+100*(railSeq-1),0);
     n->show();
     n->start_anim();
     //qDebug()<<"unlock";

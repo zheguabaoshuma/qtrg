@@ -14,6 +14,7 @@
 #include<QImage>
 #include<QThread>
 #include<QtMultimedia/QMediaPlayer>
+#include<QMovie>
 #include <QAudioOutput>
 #include "music.h"
 #include"note_generator.h"
@@ -22,6 +23,8 @@
 QT_BEGIN_NAMESPACE
 namespace Ui { class rg; }
 QT_END_NAMESPACE
+
+#include <QMovie>
 
 class rg : public QWidget {
 Q_OBJECT
@@ -37,6 +40,10 @@ public:
     void kill(int);
     music_thread *mt;
     QAudioOutput out;
+    QMovie *sprite1;
+    QMovie *sprite2;
+    QMovie *sprite3;
+    QMovie *sprite4;
     void set_song(QString);
 
 private:
@@ -55,8 +62,7 @@ private:
 
 private slots:
     void set_volume(float);
-
-void pushbtn_slot();
+    void pushbtn_slot();
 };
 
 
