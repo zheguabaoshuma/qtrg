@@ -44,8 +44,12 @@ public:
     QMovie *sprite2;
     QMovie *sprite3;
     QMovie *sprite4;
+    QMovie *far1;
+    QMovie *far2;
+    QMovie *far3;
+    QMovie *far4;
     void set_song(QString);
-
+    void reset_lcdCombo();
 private:
     Ui::rg *ui;
     void keyPressEvent(QKeyEvent *event) override{

@@ -1,12 +1,15 @@
 //
 // Created by Tuuuu on 2023/4/12.
 //
+
+#ifndef UNTITLED_MUSIC_H
+#define UNTITLED_MUSIC_H
 #include<QMediaPlayer>
 #include<QThread>
 #include <QList>
 #include "note_generator.h"
-#ifndef UNTITLED_MUSIC_H
-#define UNTITLED_MUSIC_H
+extern int base_prepare_time;
+extern int bias_time;
 class music_player:public QMediaPlayer{
 private:
     QString current_song;
@@ -21,10 +24,9 @@ public:
 class music_thread:public QThread{
     Q_OBJECT
 private:
-
-    bool running=true;
     note_generator *gen;
-    int prepare_ms=1375;
+    int prepare_ms;
+    int bias_ms;
     QElapsedTimer *timer;
 public:
     music_player *music;
@@ -32,8 +34,9 @@ public:
     void stop();
     void reset();
     void run() override{
+        prepare_ms=base_prepare_time;
+        bias_ms=bias_time;
         int rail=0,time=0;
-        running=true;
         music->read("");
         music->play();
 
@@ -42,12 +45,12 @@ public:
         else
             timer->restart();
 
-        while(running){
+        while(!QThread::isInterruptionRequested()){
             double now=timer->elapsed();
             if(!rail&&!time&&!music->note_rail_info->isEmpty())
             {
                 rail=music->note_rail_info->takeFirst();
-                time=music->time_info->takeFirst();
+                time=music->time_info->takeFirst()+bias_ms;
             }
             else if(music->note_rail_info->isEmpty()) break;
             if(time<=now+prepare_ms+3&&time>=now+prepare_ms-3){

@@ -43,7 +43,8 @@ private slots:
     void pushbtn_slot2();
     void pushbtn_slot3();
     void play_songs(QString);
-
+signals:
+    void reset_rg();
 };
 
 

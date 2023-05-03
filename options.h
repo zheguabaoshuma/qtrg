@@ -20,18 +20,19 @@ public:
     void bind(rg *bind);
     void set_volume(float);
     void set_bias(int);
-    void set_speed(int);
+    void set_speed(float);
     ~options() override;
 
 private:
     rg* bind_rg;
     int volume;
     int bias;
-    int speed;
+    double speed=1;
     Ui::options *ui;
 
 signals:
     void mvolume(float);
+    void duration_changed(int);
 };
 
 

@@ -8,9 +8,6 @@
 #include "rg.h"
 #include "ui_rg.h"
 #include"note_generator.h"
-
-
-
 rg::rg(QWidget *parent) :
         QWidget(parent), ui(new Ui::rg) {
     gen=new note_generator();
@@ -48,10 +45,26 @@ rg::rg(QWidget *parent) :
     ui->sprite2->setMovie(sprite2);
     ui->sprite3->setMovie(sprite3);
     ui->sprite4->setMovie(sprite4);
-    ui->sprite1->raise();
-    ui->sprite2->raise();
-    ui->sprite3->raise();
-    ui->sprite4->raise();
+//    ui->sprite1->raise();
+//    ui->sprite2->raise();
+//    ui->sprite3->raise();
+//    ui->sprite4->raise();
+
+    connect(gen,&note_generator::combo_break,[=](){ui->lcdCombo->display(0);});
+
+    far1=new QMovie("../hit_far.gif");
+    far2=new QMovie("../hit_far.gif");
+    far3=new QMovie("../hit_far.gif");
+    far4=new QMovie("../hit_far.gif");
+    far1->setScaledSize(QSize(57,54));
+    far2->setScaledSize(QSize(57,54));
+    far3->setScaledSize(QSize(57,54));
+    far4->setScaledSize(QSize(57,54));
+
+    ui->far_gif1->setMovie(far1);
+    ui->far_gif2->setMovie(far2);
+    ui->far_gif3->setMovie(far3);
+    ui->far_gif4->setMovie(far4);
 }
 
 
@@ -71,12 +84,26 @@ void rg::kill(int r) {
     if(n!=nullptr&&n->ready_to_be_hit)
     {
         n->stop();
+        n->entity->hide();
         switch (r) {
             case 1: sprite1->start();break;
             case 2: sprite2->start();break;
             case 3: sprite3->start();break;
             case 4: sprite4->start();break;
             default:break;
+        }
+        n->is_hit=true;
+        ui->lcdCombo->display(ui->lcdCombo->value()+1);
+
+        if(n->is_perfect==false)
+        {
+            switch(r){
+                case 1: far1->start();break;
+                case 2: far2->start();break;
+                case 3: far3->start();break;
+                case 4: far4->start();break;
+                default:break;
+            }
         }
     }
 
@@ -90,5 +117,9 @@ void rg::set_volume(float h) {
 void rg::set_song(QString s) {
     mt->music->set_current(s);
     mt->music->read(s);
+}
+
+void rg::reset_lcdCombo() {
+    ui->lcdCombo->display(0);
 }
 

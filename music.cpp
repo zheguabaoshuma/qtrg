@@ -3,6 +3,8 @@
 //
 #include "music.h"
 #include<fstream>
+int base_prepare_time;
+int bias_time;
 music_player::music_player() {
     note_rail_info=new QList<int>;
     time_info=new QList<int>;
@@ -35,16 +37,24 @@ music_thread::music_thread(note_generator *g,QWidget* parent,QAudioOutput* outpu
     music->set_current("track.mp3");
     timer=new QElapsedTimer;
     connect(this,SIGNAL(generate(int)),g,SLOT(generate_by_music(int)));
+    base_prepare_time=1375;
+
 }
 
 void music_thread::reset() {
     music->note_rail_info->clear();
     music->time_info->clear();
     timer->invalidate();
+    prepare_ms=base_prepare_time;
 }
 
 void music_thread::stop() {
-    terminate();
+    music->stop();
+    requestInterruption();
+//    if (!wait(1000)) {
+//        terminate();
+//    }
+    wait();
     reset();
 }
 

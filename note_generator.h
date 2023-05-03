@@ -1,6 +1,8 @@
 //
 // Created by Tuuuu on 2023/3/23.
 //
+#ifndef UNTITLED_NOTE_GENERATOR_H
+#define UNTITLED_NOTE_GENERATOR_H
 #include<QApplication>
 #include<qobject.h>
 #include<QTimer>
@@ -14,8 +16,7 @@
 #include <QPropertyAnimation>
 #include<QMutex>
 
-#ifndef UNTITLED_NOTE_GENERATOR_H
-#define UNTITLED_NOTE_GENERATOR_H
+
 class note_generator;
 class move_thread;
 class note_hitter;
@@ -28,10 +29,13 @@ private:
     QPropertyAnimation anim;
     note_generator* gen=nullptr;
     int rail=0;
+    static int duration;
     QElapsedTimer timer;
 public:
     QLabel *entity;
     bool ready_to_be_hit=false;
+    bool is_hit=false;
+    bool is_perfect=false;
     double posx=0,posy=0,velocity=5;
     bool recycled=false;
     void setSkin();
@@ -43,6 +47,7 @@ public:
     void setpos(double x,double y);
     void recycle();
     void stop();
+    void setDuration(int d);
 public slots:
 
 signals:
@@ -77,6 +82,9 @@ public:
 
     note* at(int seq) const{
         return stack_[seq];
+    }
+    void clear(){
+        stack_.clear();
     }
 private:
     QList<QPointer<note>> stack_;
@@ -115,8 +123,8 @@ public:
             return list_.at(seq);
         else return nullptr;
     }
-    void copy(_list *n){
-
+    void clear(){
+        list_.clear();
     }
 
 private:
@@ -198,9 +206,12 @@ public:
     note* get_first(int r){return note_pool[r].getFirst();};
     friend note;
     friend note_hitter;
+    void clear();
 public slots:
     void expire_out_list(int r);
     void generate_by_music(int r);
+signals:
+    void combo_break();
 };
 
 class move_thread;

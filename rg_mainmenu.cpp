@@ -29,6 +29,7 @@ rg_mainmenu::rg_mainmenu(QWidget *parent) :
     connect(ui->pushButton_2,SIGNAL(clicked()),this,SLOT(pushbtn_slot2()));
     connect(ui->pushButton_3,SIGNAL(clicked()),this,SLOT(pushbtn_slot3()));
     connect(select_menu,&select::start_song,this,&rg_mainmenu::play_songs);
+    connect(this,&rg_mainmenu::reset_rg,[=](){core_rg->reset_lcdCombo();});
 
     QPixmap pixmap;
     pixmap.load("../blur.jpg");
@@ -69,7 +70,7 @@ void rg_mainmenu::pushbtn_slot() {
         ui->stackedWidget->show();
         ui->pushButton_3->show();
         hide_everything();});
-
+    emit reset_rg();
 
 }
 
@@ -86,10 +87,11 @@ void rg_mainmenu::pushbtn_slot2() {
 void rg_mainmenu::pushbtn_slot3() {
     if(core_rg->mt->isRunning()){
         core_rg->mt->stop();
-        core_rg->mt->music->stop();
-        QThread::msleep(500);
+        //core_rg->mt->music->stop();
+        //
+        core_rg->gen->clear();
     }
-
+    QThread::msleep(1000);
     anim_fadein();
     connect(anim_group,&QSequentialAnimationGroup::currentAnimationChanged,[=]{
         ui->stackedWidget->setCurrentIndex(-1);
@@ -118,8 +120,8 @@ void rg_mainmenu::setup_myui() {
 
 void rg_mainmenu::play_songs(QString s) {
     core_rg->set_song(s);
-    qDebug()<<s;
     ui->stackedWidget->setCurrentIndex(2);
+
 }
 
 void rg_mainmenu::anim_fadein() {

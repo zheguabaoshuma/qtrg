@@ -4,7 +4,9 @@
 #include"note_generator.h"
 #include<QObject>
 #include<QLabel>
+extern int base_prepare_time;
 QPixmap* note::src_skin=nullptr;
+int note::duration=1500;
 QMutex _list::lock;
 QMutex _stack::lock;
 note::note(note_generator* g,QWidget* fa_pt,QObject* parent):QObject(parent)
@@ -35,6 +37,7 @@ void note::recycle() {
     timer.invalidate();
     gen->note_pool->out_list();
     ready_to_be_hit=false;
+    is_hit=false;
     //entity->move(0,-20);
     entity->hide();
     //QMutexLocker lock(&_stack::lock);
@@ -43,7 +46,7 @@ void note::recycle() {
 
 void note::setSkin() {
     QPixmap *p=new QPixmap;
-    p->load("C:/Users/Tuuuu/CLionProjects/untitled/note.png");
+    p->load("../note.png");
     src_skin=p;
     *src_skin=src_skin->scaled(62,16);
 
@@ -56,26 +59,30 @@ void note::setAnim() {
     anim.setTargetObject(entity);
     anim.setStartValue(entity->pos());
     anim.setEndValue(QPoint(posx,posy+600));
-    anim.setDuration(1500);
+    anim.setDuration(duration);//base duration is 1500, speed is 0.4px/ms
 }
 
 void note::start_anim() {
+    int base=base_prepare_time;
     if(!recycled){
         setAnim();
         //qDebug()<<anim.state();
-        QTimer::singleShot(1250,[=](){ready_to_be_hit=true;});
-        QTimer::singleShot(1500,[=](){emit me(rail);});
+//        QTimer::singleShot(1250,[=](){ready_to_be_hit=true;});
+//        QTimer::singleShot(1500,[=](){emit me(rail);});
         recycled=true;
     }
     else{
         anim.setStartValue(entity->pos());
         anim.setEndValue(QPoint(posx,posy+600));
-        QTimer::singleShot(1250,[=](){ready_to_be_hit=true;});
-        QTimer::singleShot(1500,[=](){emit me(rail);});
+
     }
     if(timer.isValid())
         timer.start();
-    else timer.restart();
+    else timer.restart();//base prepare time is 1375ms
+    QTimer::singleShot(base-75,[=](){ready_to_be_hit=true;});
+    QTimer::singleShot(base-50,[=](){is_perfect=true;});
+    QTimer::singleShot(base+50,[=](){is_perfect=false;});
+    QTimer::singleShot(base+75,[=](){emit me(rail);});
     anim.start();
 }
 
@@ -85,6 +92,11 @@ void note::setRail(int r) {
 
 void note::stop() {
     anim.stop();
+}
+
+void note::setDuration(int d) {
+    duration=d;
+    qDebug()<<duration;
 }
 
 
@@ -110,12 +122,20 @@ void note_generator::generate_note(int railSeq) {
 
 void note_generator::expire_out_list(int r) {
     note* n=note_pool[r].out_list();
+    if(n->is_hit==false)
+        emit combo_break();
     n->recycle();
 }
 
 void note_generator::generate_by_music(int r) {
     generate_note(r);
     //qDebug()<<"copy!";
+}
+
+void note_generator::clear() {
+    note_stack.clear();
+    for(int k=0;k<5;k++)
+        note_pool[k].clear();
 }
 
 void move_thread::hit(move_thread *who) {
