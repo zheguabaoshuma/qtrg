@@ -17,7 +17,7 @@ find_package(Qt6 COMPONENTS
         REQUIRED)
 
 
-add_executable(untitled main.cpp rg.cpp rg.h rg.ui note_generator.h note_generator.cpp music.h music.cpp rg_mainmenu.cpp rg_mainmenu.h rg_mainmenu.ui options.cpp options.h options.ui select.cpp select.h select.ui)
+add_executable(untitled main.cpp rg.cpp rg.h rg.ui note_generator.h note_generator.cpp music.h music.cpp rg_mainmenu.cpp rg_mainmenu.h rg_mainmenu.ui options.cpp options.h options.ui select.cpp select.h select.ui edit.cpp edit.h edit.ui)
 target_link_libraries(untitled
         Qt6::Core
         Qt6::Gui

@@ -10,6 +10,7 @@
 #include"rg.h"
 #include"options.h"
 #include"select.h"
+#include"edit.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class rg_mainmenu; }
@@ -32,6 +33,7 @@ private:
     Ui::rg_mainmenu *ui;
     rg *core_rg;
     options *core_opt;
+    edit *core_edit;
     class select *select_menu;
     QPalette palette;
     QLabel *trans_anim;
@@ -42,6 +44,7 @@ private slots:
     void pushbtn_slot();
     void pushbtn_slot2();
     void pushbtn_slot3();
+    void pushbtn_slot4();
     void play_songs(QString);
 signals:
     void reset_rg();

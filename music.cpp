@@ -12,7 +12,7 @@ music_player::music_player() {
 
 void music_player::read(QString s) {//TODO: change s to a specific file
     std::fstream read_stream;
-    read_stream.open("../data.txt",std::ios_base::in);
+    read_stream.open("../songs/track.txt",std::ios_base::in);
     int line_buf;
     while(true)
     {
@@ -34,7 +34,7 @@ void music_player::set_current(QString s) {
 music_thread::music_thread(note_generator *g,QWidget* parent,QAudioOutput* output) {
     music=new music_player;
     music->setAudioOutput(output);
-    music->set_current("track.mp3");
+    music->set_current("track");
     timer=new QElapsedTimer;
     connect(this,SIGNAL(generate(int)),g,SLOT(generate_by_music(int)));
     base_prepare_time=1375;

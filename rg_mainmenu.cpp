@@ -18,16 +18,19 @@ rg_mainmenu::rg_mainmenu(QWidget *parent) :
     core_rg=new rg(ui->stackedWidget);
     core_opt=new options(ui->stackedWidget);
     select_menu=new class select(ui->stackedWidget);
+    core_edit=new edit(ui->stackedWidget);
 
     core_opt->bind(core_rg);
     ui->stackedWidget->addWidget(select_menu);
     ui->stackedWidget->addWidget(core_opt);
     ui->stackedWidget->addWidget(core_rg);
+    ui->stackedWidget->addWidget(core_edit);
     ui->stackedWidget->hide();
     setFixedSize(1359,640);
     connect(ui->pushButton, SIGNAL(clicked()),this, SLOT(pushbtn_slot()));
     connect(ui->pushButton_2,SIGNAL(clicked()),this,SLOT(pushbtn_slot2()));
     connect(ui->pushButton_3,SIGNAL(clicked()),this,SLOT(pushbtn_slot3()));
+    connect(ui->pushButton_4,&QPushButton::clicked,this,&rg_mainmenu::pushbtn_slot4);
     connect(select_menu,&select::start_song,this,&rg_mainmenu::play_songs);
     connect(this,&rg_mainmenu::reset_rg,[=](){core_rg->reset_lcdCombo();});
 
@@ -104,18 +107,20 @@ void rg_mainmenu::pushbtn_slot3() {
 void rg_mainmenu::hide_everything() {
     ui->pushButton->hide();
     ui->pushButton_2->hide();
+    ui->pushButton_4->hide();
 }
 
 void rg_mainmenu::show_everything() {
     ui->pushButton->show();
     ui->pushButton_2->show();
+    ui->pushButton_4->show();
 }
 
 void rg_mainmenu::setup_myui() {
     ui->pushButton->setStyleSheet("QPushButton {""border: none;""padding: 0;""border-radius: 5px""}");
     ui->pushButton_2->setStyleSheet("QPushButton {""border: none;""padding: 0;""border-radius: 5px""}");
     ui->pushButton_3->setStyleSheet("QPushButton {""border: none;""padding: 0;""}");
-
+    ui->pushButton_4->setStyleSheet("QPushButton {""border: none;""padding: 0;""border-radius: 5px""}");
 }
 
 void rg_mainmenu::play_songs(QString s) {
@@ -127,6 +132,15 @@ void rg_mainmenu::play_songs(QString s) {
 void rg_mainmenu::anim_fadein() {
     anim_group->start();
     trans_anim->move(0,0);
+}
+
+void rg_mainmenu::pushbtn_slot4() {
+    anim_fadein();
+    connect(anim_group,&QSequentialAnimationGroup::currentAnimationChanged,[=]{
+        ui->stackedWidget->setCurrentIndex(3);
+        ui->stackedWidget->show();
+        ui->pushButton_3->show();
+        hide_everything();});
 }
 
 
