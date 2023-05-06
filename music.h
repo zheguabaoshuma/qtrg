@@ -28,16 +28,17 @@ private:
     int prepare_ms;
     int bias_ms;
     QElapsedTimer *timer;
+    QString current;
 public:
     music_player *music;
     music_thread(note_generator* g,QWidget* parent,QAudioOutput *output);
-    void stop();
+    void mstop();
     void reset();
     void run() override{
         prepare_ms=base_prepare_time;
         bias_ms=bias_time;
         int rail=0,time=0;
-        music->read("track");
+        //music->read(current);
         music->play();
 
         if(timer->isValid())
@@ -50,7 +51,8 @@ public:
             if(!rail&&!time&&!music->note_rail_info->isEmpty())
             {
                 rail=music->note_rail_info->takeFirst();
-                time=music->time_info->takeFirst()+bias_ms;
+                time=music->time_info->takeFirst();
+                time+=bias_ms;
             }
             else if(music->note_rail_info->isEmpty()) break;
             if(time<=now+prepare_ms+3&&time>=now+prepare_ms-3){
@@ -59,8 +61,6 @@ public:
             }
         }
     };
-    void set_bias(int);
-    void set_speed(int);
 
     signals:
     void generate(int rail);

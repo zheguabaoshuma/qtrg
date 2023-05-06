@@ -85,7 +85,14 @@
      <string>Bias</string>
     </property>
    </widget>
-   <widget class="QSpinBox" name="biasbox"/>
+   <widget class="QSpinBox" name="biasbox">
+    <property name="minimum">
+     <number>-100000</number>
+    </property>
+    <property name="maximum">
+     <number>100000</number>
+    </property>
+   </widget>
   </widget>
  </widget>
  <resources/>

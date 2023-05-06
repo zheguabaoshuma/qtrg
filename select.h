@@ -9,7 +9,7 @@
 #include <QListWidget>
 #include <QListWidgetItem>
 #include<unordered_map>
-
+#include"rg.h"
 QT_BEGIN_NAMESPACE
 namespace Ui { class select; }
 QT_END_NAMESPACE
@@ -22,6 +22,7 @@ class select : public QWidget {
 Q_OBJECT
 
 public:
+    rg* bind_rg;
     explicit select(QWidget *parent = nullptr);
     QListWidget songlist_widget;
     void add_songs(QString name);
@@ -30,6 +31,8 @@ public:
     QList<QString> artistinfo;
     QList<int> bpminfo;
     std::unordered_map<QString,artist_bpm> songinfo_hashmap;
+    bool is_edit=false;
+    void set_rg(rg*);
     ~select() override;
 
 private:
@@ -37,7 +40,7 @@ private:
 
 signals:
     void start_song(QString);
-
+    void edit_song(QString);
 };
 
 

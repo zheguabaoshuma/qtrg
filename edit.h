@@ -23,8 +23,9 @@ public:
     QAudioOutput out;
     QTimer *Timer;
     QFile *file;
+    QString current_song;
     bool en_slider=false;
-
+    void set_song(QString);
     ~edit() override;
 
 private:

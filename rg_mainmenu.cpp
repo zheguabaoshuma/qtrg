@@ -18,7 +18,8 @@ rg_mainmenu::rg_mainmenu(QWidget *parent) :
     core_rg=new rg(ui->stackedWidget);
     core_opt=new options(ui->stackedWidget);
     select_menu=new class select(ui->stackedWidget);
-    core_edit=new edit(ui->stackedWidget);
+    select_menu->set_rg(core_rg);
+    core_edit=new class edit(ui->stackedWidget);
 
     core_opt->bind(core_rg);
     ui->stackedWidget->addWidget(select_menu);
@@ -33,6 +34,7 @@ rg_mainmenu::rg_mainmenu(QWidget *parent) :
     connect(ui->pushButton_4,&QPushButton::clicked,this,&rg_mainmenu::pushbtn_slot4);
     connect(select_menu,&select::start_song,this,&rg_mainmenu::play_songs);
     connect(this,&rg_mainmenu::reset_rg,[=](){core_rg->reset_lcdCombo();});
+    connect(select_menu,&select::edit_song,this,&rg_mainmenu::edit);
 
     QPixmap pixmap;
     pixmap.load("../blur.jpg");
@@ -89,11 +91,12 @@ void rg_mainmenu::pushbtn_slot2() {
 
 void rg_mainmenu::pushbtn_slot3() {
     if(core_rg->mt->isRunning()){
-        core_rg->mt->stop();
-        //core_rg->mt->music->stop();
-        //
-        core_rg->gen->clear();
+        core_rg->mt->mstop();
     }
+    else if(core_rg->mt->music->isPlaying()){
+        core_rg->mt->music->stop();
+    }
+
     QThread::msleep(1000);
     anim_fadein();
     connect(anim_group,&QSequentialAnimationGroup::currentAnimationChanged,[=]{
@@ -137,10 +140,16 @@ void rg_mainmenu::anim_fadein() {
 void rg_mainmenu::pushbtn_slot4() {
     anim_fadein();
     connect(anim_group,&QSequentialAnimationGroup::currentAnimationChanged,[=]{
-        ui->stackedWidget->setCurrentIndex(3);
+        ui->stackedWidget->setCurrentIndex(0);
         ui->stackedWidget->show();
         ui->pushButton_3->show();
         hide_everything();});
+    select_menu->is_edit=true;
+}
+
+void rg_mainmenu::edit(QString s) {
+    core_edit->set_song(s);
+    ui->stackedWidget->setCurrentIndex(3);
 }
 
 

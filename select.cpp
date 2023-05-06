@@ -15,7 +15,7 @@ select::select(QWidget *parent) :
     songlist_widget.setIconSize(QSize(64,64));
     ui->scrollArea->setWidget(&songlist_widget);
     ui->scrollArea->show();
-    connect(&songlist_widget,&QListWidget::itemDoubleClicked,[=](QListWidgetItem *item){emit start_song(item->text());});
+    connect(&songlist_widget,&QListWidget::itemDoubleClicked,[=](QListWidgetItem *item){if(!is_edit)emit start_song(item->text());else{is_edit=false;emit edit_song(item->text());}});
     connect(&songlist_widget,&QListWidget::itemClicked,[=](QListWidgetItem *item){ display(item);});
 
     add_songs("track");
@@ -49,7 +49,6 @@ void select::add_songs(QString song) {
 
     QPixmap bg;
     bg.load(base_path+song+QString("_bg.png"));
-    //bg.scaled(64,64);
 
     QListWidgetItem* aitem;
     aitem=new QListWidgetItem;
@@ -71,6 +70,10 @@ void select::display(QListWidgetItem *item) {
     artist_bpm ab=songinfo_hashmap.at(name);
     char buffer[3];itoa(ab.bpm,buffer,10);
     ui->songinfolabel->setText("ARTIST: "+ab.artist+"\tbpm: "+QString(buffer));
+}
+
+void select::set_rg(rg *r) {
+    bind_rg=r;
 }
 
 

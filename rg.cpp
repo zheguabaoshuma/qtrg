@@ -28,10 +28,10 @@ rg::rg(QWidget *parent) :
     line_skin=line_skin.scaled(500,8);
     ui->line->setPixmap(line_skin);
 
-    sprite1=new QMovie("../sprite.gif");
-    sprite2=new QMovie("../sprite.gif");
-    sprite3=new QMovie("../sprite.gif");
-    sprite4=new QMovie("../sprite.gif");
+    sprite1=new QMovie("../sprites.gif");
+    sprite2=new QMovie("../sprites.gif");
+    sprite3=new QMovie("../sprites.gif");
+    sprite4=new QMovie("../sprites.gif");
     sprite1->setScaledSize(QSize(128,128));
     sprite2->setScaledSize(QSize(128,128));
     sprite3->setScaledSize(QSize(128,128));
@@ -65,6 +65,7 @@ rg::~rg() {
 }
 
 void rg::pushbtn_slot() {
+    gen->clear();
     v_note->setSkin();
     mt->start();
 }
