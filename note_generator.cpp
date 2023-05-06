@@ -66,9 +66,6 @@ void note::start_anim() {
     int base=base_prepare_time;
     if(!recycled){
         setAnim();
-        //qDebug()<<anim.state();
-//        QTimer::singleShot(1250,[=](){ready_to_be_hit=true;});
-//        QTimer::singleShot(1500,[=](){emit me(rail);});
         recycled=true;
     }
     else{
@@ -138,13 +135,7 @@ void note_generator::clear() {
         note_pool[k].clear();
 }
 
-void move_thread::hit(move_thread *who) {
-    if(who==this)
-    {
-        stop=true;
-        railSeq=0;
-    }
-}
+
 
 
 

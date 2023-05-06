@@ -37,7 +37,7 @@ public:
         prepare_ms=base_prepare_time;
         bias_ms=bias_time;
         int rail=0,time=0;
-        music->read("");
+        music->read("track");
         music->play();
 
         if(timer->isValid())

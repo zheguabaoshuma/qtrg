@@ -11,11 +11,7 @@
 rg::rg(QWidget *parent) :
         QWidget(parent), ui(new Ui::rg) {
     gen=new note_generator();
-    hit=new note_hitter();
     gen->setParent(this),gen->set_Parent(this);
-    hit->setParent(this);
-    hit->setGenerator(gen);
-    gen->setHitter(hit);
 
     ui->setupUi(this);
     setFixedSize(1359,640);
@@ -45,10 +41,6 @@ rg::rg(QWidget *parent) :
     ui->sprite2->setMovie(sprite2);
     ui->sprite3->setMovie(sprite3);
     ui->sprite4->setMovie(sprite4);
-//    ui->sprite1->raise();
-//    ui->sprite2->raise();
-//    ui->sprite3->raise();
-//    ui->sprite4->raise();
 
     connect(gen,&note_generator::combo_break,[=](){ui->lcdCombo->display(0);});
 

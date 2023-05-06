@@ -19,7 +19,6 @@
 
 class note_generator;
 class move_thread;
-class note_hitter;
 
 class note:public QObject
 {
@@ -131,56 +130,7 @@ private:
     QList<QPointer<note>> list_;
 };
 
-class move_thread:public QThread
-{
-Q_OBJECT
-private:
-    _list* bind_list[5]= {nullptr,nullptr,nullptr,nullptr,nullptr};
-    _list* bind_list_copy[5]={nullptr, nullptr, nullptr, nullptr, nullptr};
-    note_hitter* h=nullptr;
-    int railSeq=0;
-    bool stop=false;
-    int line_pospx=560;//distance from top, 7/8 window height
-    int velocity=1;
-    int halfwinpx=30;
 
-public:
-    bool readyToSuicide=false;
-    move_thread(note_hitter* h,QObject* parent=nullptr){
-
-        //QObject::connect(h,SIGNAL(&note_hitter::suicide()),this,SLOT(&move_thread::hit()));
-    };
-    void bind(_list* n,_list* m){
-        for(int k=1;k<5;k++)
-            bind_list[k]=(n+k),bind_list_copy[k]=(m+k);
-    }
-    void run() override
-    {
-
-        while(!stop){
-
-            for(int i=1;i<5;i++){
-                int n=bind_list[i]->size();
-                if(n>0) {
-                    qDebug()<<"run";
-                    QLabel* e=bind_list[i]->getFirst()->entity;
-                    QPropertyAnimation anim(e, "pos");
-                    anim.setDuration(200);
-                    anim.setStartValue(e->pos());
-                    anim.setEndValue(QPoint(bind_list[i]->getFirst()->posx, bind_list[i]->getFirst()->posy+600));
-                    anim.start();
-                }
-
-            }
-            QThread::msleep(1000);
-        }
-    }
-
-signals:
-
-private slots:
-    void hit(move_thread* who);// hitter will broadcast who will be hit, and each thread decide whether to suicide, from hitter
-};
 
 class note_generator:public QObject
 {
@@ -189,23 +139,17 @@ private:
     QWidget *parent;
     _list note_pool[5];//0 is not used
     _stack note_stack;
-    double bpm=0;
     QTimer clock;
-    int default_v=5;
-    note_hitter* h=nullptr;
-    move_thread *m=nullptr;
 public:
     note_generator(){
 
     };
     void generate_note(int railSeq);
     void read();
-    void setHitter(note_hitter* h){this->h=h;}
     void set_Parent(QWidget* w){parent=w;};
     bool is_empty(int r) { return note_pool[r].isEmpty();};
     note* get_first(int r){return note_pool[r].getFirst();};
     friend note;
-    friend note_hitter;
     void clear();
 public slots:
     void expire_out_list(int r);
@@ -214,20 +158,7 @@ signals:
     void combo_break();
 };
 
-class move_thread;
-class note_hitter:public QObject
-{
-Q_OBJECT
-private:
-    note_generator* g=nullptr;
-public:
-    note_hitter(QObject* parent=nullptr): QObject(parent){};
-    void setGenerator(note_generator* g){this->g=g;}
-private slots:
 
-signals:
-    void suicide(move_thread* who);//decide which note to be hit, to move_thread
-};
 
 
 

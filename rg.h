@@ -33,7 +33,6 @@ public:
     explicit rg(QWidget *parent = nullptr);
     void begin();
     note_generator* gen;
-    note_hitter* hit;
     note *v_note;
     ~rg() override;
     QLabel line;

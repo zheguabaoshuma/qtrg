@@ -12,7 +12,10 @@ music_player::music_player() {
 
 void music_player::read(QString s) {//TODO: change s to a specific file
     std::fstream read_stream;
-    read_stream.open("../songs/track.txt",std::ios_base::in);
+    QString path="../songs/";
+    path+=s;
+    path+=".txt";
+    read_stream.open(path.toStdString(),std::ios_base::in);
     int line_buf;
     while(true)
     {
@@ -51,9 +54,6 @@ void music_thread::reset() {
 void music_thread::stop() {
     music->stop();
     requestInterruption();
-//    if (!wait(1000)) {
-//        terminate();
-//    }
     wait();
     reset();
 }
