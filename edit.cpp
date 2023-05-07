@@ -94,7 +94,7 @@ void edit::set_song(QString s) {
     current_song=s;
     player->setSource("../songs/"+s+".mp3");
     file=new QFile("../songs/"+s+".txt");
-    qDebug()<<file->fileName();
+    //qDebug()<<file->fileName();
     file->open(QIODevice::ReadWrite|QIODevice::Text);
     QTextStream in(file);
     in.setAutoDetectUnicode(true);

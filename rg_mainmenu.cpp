@@ -14,6 +14,8 @@ rg_mainmenu::rg_mainmenu(QWidget *parent) :
     ui->setupUi(this);
     setup_myui();
     ui->pushButton_3->hide();
+    QIcon p("../icon.jpg");
+    setWindowIcon(p);
 
     core_rg=new rg(ui->stackedWidget);
     core_opt=new options(ui->stackedWidget);
@@ -104,7 +106,7 @@ void rg_mainmenu::pushbtn_slot3() {
         ui->stackedWidget->hide();
         ui->pushButton_3->hide();
         show_everything();});
-
+    select_menu->is_edit= false;
 }
 
 void rg_mainmenu::hide_everything() {

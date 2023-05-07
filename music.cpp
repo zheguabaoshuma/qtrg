@@ -15,7 +15,7 @@ void music_player::read(QString s) {//TODO: change s to a specific file
     QString path="../songs/";
     path+=s;
     path+=".txt";
-    qDebug()<<path;
+    //qDebug()<<path;
     read_stream.open(path.toStdString(),std::ios_base::in);
     int line_buf;
     while(true)
